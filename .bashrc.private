@@ -1,0 +1,5 @@
+alias ..='cd ..'
+alias ...='cd ../..'
+alias be='bundle exec'
+xmodmap -e "keycode  35 = asciitilde asciicircum asciitilde asciicircum"
+xmodmap -e "keycode  91 = KP_Delete period KP_Delete period"
