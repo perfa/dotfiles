@@ -1,0 +1,9 @@
+*.o
+*~
+*.inc
+.gitignore
+*egg-info/
+*orig
+'.so
+*.so.[0-9]*
+*.pyc
