@@ -20,6 +20,7 @@ package { $development: ensure => "installed" }
 
 $desktop = [
              "gnupg",
+             "tree",
              "chromium-browser",
              "aptitude",
              "synaptic",
@@ -83,14 +84,19 @@ file { "$home/.bashrc.private":
 
 ### Thinkpad/Lenovo Power control (TLP) ###
 $tlp_source = "/etc/apt/sources.list.d/linrunner-tlp-$lsbdistcodename.list"
+$ubuntu_tweak_source = "/etc/apt/sources.list.d/ubuntu-tweak.list"
+
+exec { '/usr/bin/apt-get update':
+     subscribe   => [
+                      File[$tlp_source],
+                      File[$ubuntu_tweak_source],
+                    ],
+     refreshonly => true,
+     }
+
 file { $tlp_source:
      ensure  => file,
      content => "deb http://ppa.launchpad.net/linrunner/tlp/ubuntu $lsbdistcodename main\n# deb-src http://ppa.launchpad.net/linrunner/tlp/ubuntu $lsbdistcodename main",
-     }
-
-exec { '/usr/bin/apt-get update':
-     subscribe   => File[$tlp_source],
-     refreshonly => true,
      }
 
 $tlp_pkgs = [
@@ -104,3 +110,13 @@ package { $tlp_pkgs:
      ensure  => installed,
      require => File[$tlp_source] 
      }
+
+file { $ubuntu_tweak_source:
+     ensure  => file,
+     content => "deb http://ppa.launchpad.net/tualatrix/ppa/ubuntu $lsbdistcodename main",
+     }
+
+package { "ubuntu-tweak":
+        ensure  => installed,
+        require => File[$ubuntu_tweak_source],
+        }
