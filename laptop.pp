@@ -120,3 +120,9 @@ package { "ubuntu-tweak":
         ensure  => installed,
         require => File[$ubuntu_tweak_source],
         }
+$unity_favorites = "['application://nautilus.desktop', 'applic
+
+exec { "/usr/bin/gsettings set com.canonical.Unity.Launcher favorites \"${unity_favorites}\"" :
+     require => Package[$desktop],
+     user => "mango",
+ }
