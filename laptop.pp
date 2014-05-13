@@ -15,6 +15,7 @@ $development = [
                  "python-hamcrest",
                  "nodejs",
                  "npm",
+                 "cmake",
                 ]
 package { $development: ensure => "installed" }
 
