@@ -1,2 +1,4 @@
 sudo apt-get install git puppet
-sudo puppet apply ./laptop.pp
+mkdir modules
+sudo puppet module install --modulepath ./modules puppetlabs-apt
+sudo puppet apply ./laptop.pp --modulepath ./modules

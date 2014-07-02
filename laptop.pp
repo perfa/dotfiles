@@ -83,22 +83,26 @@ file { "$home/.bashrc.private":
      require => File[$dotfiles],
      }
 
-### Thinkpad/Lenovo Power control (TLP) ###
-$tlp_source = "/etc/apt/sources.list.d/linrunner-tlp-$lsbdistcodename.list"
-$ubuntu_tweak_source = "/etc/apt/sources.list.d/ubuntu-tweak.list"
 
-exec { '/usr/bin/apt-get update':
-     subscribe   => [
-                      File[$tlp_source],
-                      File[$ubuntu_tweak_source],
-                    ],
-     refreshonly => true,
-     }
+### Thinkpad/Lenovo Power control (TLP) and UbuntuTweak ###
+# These two need some special apt lovin', as they have their own PPA's
+include apt
 
-file { $tlp_source:
-     ensure  => file,
-     content => "deb http://ppa.launchpad.net/linrunner/tlp/ubuntu $lsbdistcodename main\n# deb-src http://ppa.launchpad.net/linrunner/tlp/ubuntu $lsbdistcodename main",
-     }
+apt::source { 'linrunner_tlp':
+    location    => 'http://ppa.launchpad.net/linrunner/tlp/ubuntu',
+    repos       => 'main',
+    include_src => true,
+    key         => '02D65EFF',
+    key_server  => 'keyserver.ubuntu.com',
+    }
+
+apt::source { 'ubuntu_tweak':
+    location    => 'http://ppa.launchpad.net/tualatrix/ppa/ubuntu',
+    repos       => 'main',
+    include_src => false,
+    key         => 'E260F5B0',
+    key_server  => 'keyserver.ubuntu.com',
+    }
 
 $tlp_pkgs = [
              "tlp",
@@ -109,20 +113,16 @@ $tlp_pkgs = [
 
 package { $tlp_pkgs: 
      ensure  => installed,
-     require => File[$tlp_source] 
-     }
-
-file { $ubuntu_tweak_source:
-     ensure  => file,
-     content => "deb http://ppa.launchpad.net/tualatrix/ppa/ubuntu $lsbdistcodename main",
+     require => Apt::Source[linrunner_tlp],
      }
 
 package { "ubuntu-tweak":
-        ensure  => installed,
-        require => File[$ubuntu_tweak_source],
-        }
-$unity_favorites = "['application://nautilus.desktop', 'applic
+     ensure  => installed,
+     require => Apt::Source[ubuntu_tweak],
+     }
 
+
+### LAUNCHER!!! :D ###
 exec { "/usr/bin/gsettings set com.canonical.Unity.Launcher favorites \"${unity_favorites}\"" :
      require => Package[$desktop],
      user => "mango",
