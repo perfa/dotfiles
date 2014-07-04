@@ -57,8 +57,7 @@ file { "$home/.gitignore":
 file { "$home/.emacs":
      ensure  => link,
      target  => "$dotfiles/.emacs",
-     require => File[$dotfiles],
-     }
+     require => File[$dotfiles], }
 
 file { "$home/.emacs.d":
      ensure  => link,
@@ -126,4 +125,9 @@ package { "ubuntu-tweak":
 exec { "/usr/bin/gsettings set com.canonical.Unity.Launcher favorites \"${unity_favorites}\"" :
      require => Package[$desktop],
      user => "mango",
- }
+}
+
+
+### Fuck unity hidey-disappeary scrollbars!!!! :D ###
+exec { "gsettings set com.canonical.desktop.interface scrollbar-mode normal":
+}
