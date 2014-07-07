@@ -1,10 +1,25 @@
+alias ll='ls -halF'
+alias l='ls -CF -1'
 alias ..='cd ..'
 alias ...='cd ../..'
-
 alias be='bundle exec'
 alias pygrep='find . -name "*.py" | xargs grep -sI --color=auto'
-
 alias grepfile="cut -d ':' -f 1 | sort | uniq"
 
-xmodmap -e "keycode  35 = asciitilde asciicircum asciitilde asciicircum"
-xmodmap -e "keycode  91 = KP_Delete period KP_Delete period"
+if [ -x /usr/bin/xmodmap ]; then
+    xmodmap -e "keycode  35 = asciitilde asciicircum asciitilde asciicircum"
+    xmodmap -e "keycode  91 = KP_Delete period KP_Delete period"
+    xmodmap -e "keycode 107 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift"
+fi
+
+export PATH=$PATH:~/bin
+
+source ~/bin/git_completion.sh
+export GIT_PS1_SHOWDIRTYSTATE=1
+export GIT_PS1_SHOWUPSTREAM="git verbose"
+
+PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h:\[\033[00m\]\[\033[33m\]$(__git_ps1 "(%s)")\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+
+if [ `which doge` ]; then
+    doge
+fi
