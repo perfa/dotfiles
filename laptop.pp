@@ -43,6 +43,16 @@ exec { "get_dotfiles":
 
 file { $dotfiles: }
 
+file { "$home/bin":
+     ensure => directory,
+     }
+
+file { "$home/bin/git_completion.sh":
+     ensure  => link,
+     target  => "$dotfiles/bin/git_completion.sh",
+     require => [ File[$dotfiles], File["$home/bin"] ],
+     }
+
 file { "$home/.gitconfig":
      ensure  => link,
      target  => "$dotfiles/.gitconfig",
