@@ -25,9 +25,10 @@ $desktop = [
              "chromium-browser",
              "aptitude",
              "synaptic",
-             "keepassx",
              "gimp",
              "xchat",
+             "htop",
+             "gparted",
             ]
 package { $desktop: ensure => "installed" }
 
@@ -122,12 +123,21 @@ package { "ubuntu-tweak":
 
 
 ### LAUNCHER!!! :D ###
+$unity_favorites = "['application://unity-control-center.desktop', 'unity://running-apps', 'application://nautilus.desktop', 'application://chromium-browser.desktop', 'application://gnome-terminal.desktop', 'unity://desktop-icon', 'unity://expo-icon', 'unity://devices']"
+
 exec { "/usr/bin/gsettings set com.canonical.Unity.Launcher favorites \"${unity_favorites}\"" :
-     require => Package[$desktop],
-     user => "mango",
+    require => Package[$desktop],
+    user => "mango",
 }
 
 
 ### Fuck unity hidey-disappeary scrollbars!!!! :D ###
-exec { "gsettings set com.canonical.desktop.interface scrollbar-mode normal":
+exec { "/usr/bin/gsettings set com.canonical.desktop.interface scrollbar-mode normal":
+    user => "mango",
+}
+
+file_line { 'include private bash settings':
+    ensure => present,
+    line => '. ~/.bashrc.private',
+    path => '/home/mango/.bashrc',
 }
