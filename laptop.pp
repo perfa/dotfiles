@@ -138,6 +138,38 @@ exec { "/usr/bin/gsettings set com.canonical.desktop.interface scrollbar-mode no
 
 file_line { 'include private bash settings':
     ensure => present,
-    line => '. ~/.bashrc.private',
-    path => '/home/mango/.bashrc',
+    line   => '. ~/.bashrc.private',
+    path   => '/home/mango/.bashrc',
+}
+
+file_line { 'xchat: channels as tabs':
+    ensure => present,
+    line   => 'tab_layout = 0',
+    match  => 'tab_layout = \d',
+    path   => '/home/mango/.xchat2/xchat.conf',
+    require => Package['xchat'],
+}
+
+file_line { 'xchat: tabs at bottom':
+    ensure => present,
+    line   => 'tab_pos = 6',
+    match  => 'tab_pos = \d',
+    path   => '/home/mango/.xchat2/xchat.conf',
+    require => Package['xchat'],
+}
+
+file_line { 'xchat: no channel list on startup':
+    ensure => present,
+    line   => 'gui_slist_skip = 1',
+    match  => 'gui_slist_skip = \d',
+    path   => '/home/mango/.xchat2/xchat.conf',
+    require => Package['xchat'],
+}
+
+file_line { 'xchat: no quit dialog':
+    ensure => present,
+    line   => 'gui_quit_dialog = 0',
+    match  => 'gui_quit_dialog = \d',
+    path   => '/home/mango/.xchat2/xchat.conf',
+    require => Package['xchat'],
 }
