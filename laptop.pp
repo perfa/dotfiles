@@ -41,6 +41,11 @@ exec { "get_dotfiles":
      creates => $dotfiles,
      }
 
+File {
+     owner => "mango",
+     group => "mango",
+     }
+
 file { $dotfiles: }
 
 file { "$home/bin":
