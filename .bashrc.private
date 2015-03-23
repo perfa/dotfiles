@@ -5,6 +5,13 @@ alias ...='cd ../..'
 alias be='bundle exec'
 alias pygrep='find . -name "*.py" | xargs grep -sI --color=auto'
 alias grepfile="cut -d ':' -f 1 | sort | uniq"
+alias unrel="git log --pretty=\"format:%h %an %s\" --graph `git tag | grep v | sort | tail -n 1`..HEAD"
+alias dlog='docker logs $(docker ps -a | tail -n +2 | awk '\''{ print $1 }'\'' | head -n 1)'
+alias verify='mvn clean package verify'
+alias addmod='git st | grep modified | awk '\''{print $2};'\'' | xargs git add'
+alias gp='git pull --rebase'
+alias gs='git status'
+alias amend='git ci --amend'
 
 if [ -x /usr/bin/xmodmap ]; then
     xmodmap -e "keycode  35 = asciitilde asciicircum asciitilde asciicircum"
@@ -13,12 +20,12 @@ if [ -x /usr/bin/xmodmap ]; then
 fi
 
 export PATH=$PATH:~/bin
-
+export LESS=MQRS
 source ~/bin/git_completion.sh
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUPSTREAM="git verbose"
 
-PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h:\[\033[00m\]\[\033[33m\]$(__git_ps1 "(%s)")\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+PS1='[\[\033[1;35m\]$?\[\033[00m\]]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h:\[\033[00m\]\[\033[33m\]$(__git_ps1 "(%s)")\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 
 if [ `which doge` ]; then
     doge

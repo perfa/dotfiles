@@ -41,9 +41,9 @@ exec { "get_dotfiles":
      creates => $dotfiles,
      }
 
-File {
-     owner => "mango",
-     group => "mango",
+file {
+     owner => 'mango',
+     group => 'mango',
      }
 
 file { $dotfiles: }
