@@ -11,7 +11,15 @@ alias verify='mvn clean package verify'
 alias addmod='git st | grep modified | awk '\''{print $2};'\'' | xargs git add'
 alias gp='git pull --rebase'
 alias gs='git status'
+alias gd='git diff'
 alias amend='git ci --amend'
+alias serve='browser-sync start --server --port 3001 --files="./*"'
+alias j8='JAVA_HOME=/usr/lib/jvm/jdk-8-oracle-x64'
+alias hintz="node_modules/.bin/jshint source/ && \
+         node_modules/.bin/jshint test/spec/ && \
+         node_modules/.bin/jscs source/ --reporter=inline && \
+         node_modules/.bin/jscs test/spec/ --reporter=inline"
+alias dockclean='docker ps -a | tail -n +2 | awk '\''{print $1;}'\'' | xargs docker rm'
 
 if [ -x /usr/bin/xmodmap ]; then
     xmodmap -e "keycode  35 = asciitilde asciicircum asciitilde asciicircum"
@@ -24,6 +32,7 @@ export LESS=MQRS
 source ~/bin/git_completion.sh
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUPSTREAM="git verbose"
+export DOCKER_HOST=localhost:2375
 
 PS1='[\[\033[1;35m\]$?\[\033[00m\]]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h:\[\033[00m\]\[\033[33m\]$(__git_ps1 "(%s)")\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 

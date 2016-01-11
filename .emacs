@@ -145,8 +145,13 @@
 
 ;; Color
 (require 'color-theme)
+(require 'color-theme-solarized)
 (color-theme-initialize)
-(color-theme-dark-blue2)
+(color-theme-solarized-light)
+;;(color-theme-initialize)
+;;(color-theme-dark-blue2)
+;;(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/emacs-colors-solarized")
+;;(load-theme 'solarized t)
 
 ;; Ido mode, scatter match on file open, buffer switch etc.
 (require 'ido)
@@ -230,7 +235,21 @@
              ("\\.proc\\'" . xml-mode)
              ("\\.system\\'" . xml-mode))
        auto-mode-alist))
-;;;
+
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.ngt\\'" . web-mode))
+
+(setq web-mode-engines-alist
+      '(("angular.js"    . "\\.ngt\\'")
+        ("angular.js"    . "\\.js\\'")))
 ;;;; Winner mode, undo / redo window config with C-c left, C-c right
 (when (fboundp 'winner-mode)
   (winner-mode 1))

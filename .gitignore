@@ -7,3 +7,4 @@
 '.so
 *.so.[0-9]*
 *.pyc
+.vim/.netrwhist
