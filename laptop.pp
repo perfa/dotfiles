@@ -121,25 +121,24 @@ file_line { 'include private bash settings':
 include apt
 
 apt::source { 'linrunner_tlp':
-    location    => 'http://ppa.launchpad.net/linrunner/tlp/ubuntu',
-    repos       => 'main',
-    include_src => true,
-    key         => '02D65EFF',
-    key_server  => 'keyserver.ubuntu.com',
+    location   => 'http://ppa.launchpad.net/linrunner/tlp/ubuntu',
+    repos      => 'main',
+    key        => {
+        'id'     =>  '2042F03C5FABD0BA2CED40412B3F92F902D65EFF',
+        'server' => 'keyserver.ubuntu.com'
     }
+}
 
 apt::source { 'ubuntu_tweak':
     location    => 'http://ppa.launchpad.net/tualatrix/ppa/ubuntu',
     repos       => 'main',
-    include_src => false,
     key         => 'E260F5B0',
     key_server  => 'keyserver.ubuntu.com',
-    }
+}
 
 apt::source { 'noobslab/themes':
     location    => 'http://ppa.launchpad.net/noobslab/themes/ubuntu',
     repos       => 'main',
-    include_src => 'false',
     key         => '0D188ACB',
     key_server  => 'keyserver.ubuntu.com'
 }
