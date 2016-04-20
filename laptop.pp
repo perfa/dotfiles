@@ -5,10 +5,8 @@
 $development = [ 
                  "git",
                  "tig",
-                 "emacs",
                  "vim",
                  "python-flake8",
-                 "pep8",
                  "python-nose",
                  "python-pip",
                  "python-nosexcover",
@@ -16,22 +14,36 @@ $development = [
                  "nodejs",
                  "npm",
                  "cmake",
+                 "maven",
+                 "expect",
+                 "strongswan",
+                 "strongswan-plugin-xauth-generic",
+                 "tmux"
                 ]
 package { $development: ensure => "installed" }
 
 $desktop = [
+             "sl",
              "gnupg",
              "tree",
              "chromium-browser",
              "aptitude",
              "synaptic",
              "gimp",
-             "xchat",
              "htop",
              "gparted",
+             "vlc",
             ]
 package { $desktop: ensure => "installed" }
 
+exec { "accept-msttcorefonts-license":
+    command => "/bin/sh -c \"echo ttf-mscorefonts-installer msttcorefonts/accepted-     mscorefonts-eula select true | debconf-set-selections\""
+}
+
+package { "ubuntu-extras-restricted":
+    ensure  => installed,
+    require => Exec['accept-msttcorefonts-license']
+}
 
 ### SETTINGS!! :D ###
 $home = '/home/mango'
@@ -41,7 +53,7 @@ exec { "get_dotfiles":
      creates => $dotfiles,
      }
 
-file {
+File {
      owner => 'mango',
      group => 'mango',
      }
@@ -98,6 +110,11 @@ file { "$home/.bashrc.private":
      require => File[$dotfiles],
      }
 
+file_line { 'include private bash settings':
+    ensure => present,
+    line   => '. ~/.bashrc.private',
+    path   => '/home/mango/.bashrc',
+}
 
 ### Thinkpad/Lenovo Power control (TLP) and UbuntuTweak ###
 # These two need some special apt lovin', as they have their own PPA's
@@ -119,6 +136,14 @@ apt::source { 'ubuntu_tweak':
     key_server  => 'keyserver.ubuntu.com',
     }
 
+apt::source { 'noobslab/themes':
+    location    => 'http://ppa.launchpad.net/noobslab/themes/ubuntu',
+    repos       => 'main',
+    include_src => 'false',
+    key         => '0D188ACB',
+    key_server  => 'keyserver.ubuntu.com'
+}
+
 $tlp_pkgs = [
              "tlp",
              "tlp-rdw",
@@ -137,54 +162,7 @@ package { "ubuntu-tweak":
      }
 
 
-### LAUNCHER!!! :D ###
-$unity_favorites = "['application://unity-control-center.desktop', 'unity://running-apps', 'application://nautilus.desktop', 'application://chromium-browser.desktop', 'application://gnome-terminal.desktop', 'unity://desktop-icon', 'unity://expo-icon', 'unity://devices']"
-
-exec { "/usr/bin/gsettings set com.canonical.Unity.Launcher favorites \"${unity_favorites}\"" :
-    require => Package[$desktop],
-    user => "mango",
-}
-
-
 ### Fuck unity hidey-disappeary scrollbars!!!! :D ###
 exec { "/usr/bin/gsettings set com.canonical.desktop.interface scrollbar-mode normal":
     user => "mango",
-}
-
-file_line { 'include private bash settings':
-    ensure => present,
-    line   => '. ~/.bashrc.private',
-    path   => '/home/mango/.bashrc',
-}
-
-file_line { 'xchat: channels as tabs':
-    ensure => present,
-    line   => 'tab_layout = 0',
-    match  => 'tab_layout = \d',
-    path   => '/home/mango/.xchat2/xchat.conf',
-    require => Package['xchat'],
-}
-
-file_line { 'xchat: tabs at bottom':
-    ensure => present,
-    line   => 'tab_pos = 6',
-    match  => 'tab_pos = \d',
-    path   => '/home/mango/.xchat2/xchat.conf',
-    require => Package['xchat'],
-}
-
-file_line { 'xchat: no channel list on startup':
-    ensure => present,
-    line   => 'gui_slist_skip = 1',
-    match  => 'gui_slist_skip = \d',
-    path   => '/home/mango/.xchat2/xchat.conf',
-    require => Package['xchat'],
-}
-
-file_line { 'xchat: no quit dialog':
-    ensure => present,
-    line   => 'gui_quit_dialog = 0',
-    match  => 'gui_quit_dialog = \d',
-    path   => '/home/mango/.xchat2/xchat.conf',
-    require => Package['xchat'],
 }
