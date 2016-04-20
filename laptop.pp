@@ -130,17 +130,30 @@ apt::source { 'linrunner_tlp':
 }
 
 apt::source { 'ubuntu_tweak':
-    location    => 'http://ppa.launchpad.net/tualatrix/ppa/ubuntu',
-    repos       => 'main',
-    key         => 'E260F5B0',
-    key_server  => 'keyserver.ubuntu.com',
+    location => 'http://archive.getdeb.net/ubuntu',
+    repos    => 'wily-getdeb apps',
+    key      => {
+         'id'      => '1958A549614CE21CFC27F4BAA8A515F046D7E7CF',
+         'server'  => 'keyserver.ubuntu.com'
+    }
 }
 
 apt::source { 'noobslab/themes':
-    location    => 'http://ppa.launchpad.net/noobslab/themes/ubuntu',
-    repos       => 'main',
-    key         => '0D188ACB',
-    key_server  => 'keyserver.ubuntu.com'
+    location => 'http://ppa.launchpad.net/noobslab/themes/ubuntu',
+    repos    => 'main',
+    key      => {
+        'id'      => '4FA44A478284A18C1BA4A9CAD530E028F59EAE4D',
+        'server'  => 'keyserver.ubuntu.com'
+    }
+}
+
+apt::source { 'webupd8team-ubuntu-java-wily':
+    location => 'http://ppa.launchpad.net/webupd8team/java/ubuntu',
+    repos    => 'main',
+    key      => {
+        'id'     => '7B2C3B0889BF5709A105D03AC2518248EEA14886',
+        'server' => 'keyserver.ubuntu.com'
+    }
 }
 
 $tlp_pkgs = [
