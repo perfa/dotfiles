@@ -33,6 +33,7 @@ $desktop = [
              "htop",
              "gparted",
              "vlc",
+             "unity-tweak-tool",
             ]
 package { $desktop: ensure => "installed" }
 
@@ -125,16 +126,15 @@ apt::source { 'linrunner_tlp':
     repos      => 'main',
     key        => {
         'id'     =>  '2042F03C5FABD0BA2CED40412B3F92F902D65EFF',
-        'server' => 'keyserver.ubuntu.com'
     }
 }
 
 apt::source { 'ubuntu_tweak':
     location => 'http://archive.getdeb.net/ubuntu',
-    repos    => 'wily-getdeb apps',
+    release  => 'wily-getdeb',
+    repos    => 'apps',
     key      => {
          'id'      => '1958A549614CE21CFC27F4BAA8A515F046D7E7CF',
-         'server'  => 'keyserver.ubuntu.com'
     }
 }
 
@@ -143,7 +143,6 @@ apt::source { 'noobslab/themes':
     repos    => 'main',
     key      => {
         'id'      => '4FA44A478284A18C1BA4A9CAD530E028F59EAE4D',
-        'server'  => 'keyserver.ubuntu.com'
     }
 }
 
@@ -152,7 +151,6 @@ apt::source { 'webupd8team-ubuntu-java-wily':
     repos    => 'main',
     key      => {
         'id'     => '7B2C3B0889BF5709A105D03AC2518248EEA14886',
-        'server' => 'keyserver.ubuntu.com'
     }
 }
 
@@ -173,6 +171,20 @@ package { "ubuntu-tweak":
      require => Apt::Source[ubuntu_tweak],
      }
 
+package { "oracle-java8-installer":
+    ensure  => "installed",
+    require => [ Apt::source['webupd8team-ubtuntu-java-wily'], Exec['accept-oracle-license'] ]
+}
+
+exec { "accept-oracle-license":
+    command => "echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections",
+    require => Exec[see-oracle-license]
+}
+
+exec { "see-oracle-license":
+    command => "echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections",
+    require => Exec[see-oracle-license]
+}
 
 ### Fuck unity hidey-disappeary scrollbars!!!! :D ###
 exec { "/usr/bin/gsettings set com.canonical.desktop.interface scrollbar-mode normal":
