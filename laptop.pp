@@ -184,7 +184,7 @@ exec { "accept-oracle-license":
 
 exec { "see-oracle-license":
     command => "echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections",
-    path    => "/bin/"
+    path    => "/bin/",
     require => Exec[see-oracle-license]
 }
 
