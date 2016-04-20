@@ -41,11 +41,6 @@ exec { "accept-msttcorefonts-license":
     command => "/bin/sh -c \"echo ttf-mscorefonts-installer msttcorefonts/accepted-     mscorefonts-eula select true | debconf-set-selections\""
 }
 
-package { "ubuntu-extras-restricted":
-    ensure  => installed,
-    require => Exec['accept-msttcorefonts-license']
-}
-
 ### SETTINGS!! :D ###
 $home = '/home/mango'
 $dotfiles = "$home/.dotfiles"
@@ -138,13 +133,7 @@ apt::source { 'ubuntu_tweak':
     }
 }
 
-apt::source { 'noobslab/themes':
-    location => 'http://ppa.launchpad.net/noobslab/themes/ubuntu',
-    repos    => 'main',
-    key      => {
-        'id'      => '4FA44A478284A18C1BA4A9CAD530E028F59EAE4D',
-    }
-}
+apt::ppa { 'ppa:noobslab/themes': }
 
 apt::source { 'webupd8team-ubuntu-java-wily':
     location => 'http://ppa.launchpad.net/webupd8team/java/ubuntu',
