@@ -173,7 +173,7 @@ package { "ubuntu-tweak":
 
 package { "oracle-java8-installer":
     ensure  => "installed",
-    require => [ Apt::Source['webupd8team-ubtuntu-java-wily'], Exec['accept-oracle-license'] ]
+    require => [ Apt::Source['webupd8team-ubuntu-java-wily'], Exec['accept-oracle-license'] ]
 }
 
 exec { "accept-oracle-license":
