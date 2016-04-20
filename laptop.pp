@@ -167,13 +167,13 @@ package { "oracle-java8-installer":
 
 exec { "accept-oracle-license":
     command => "echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections",
-    path    => "/bin/",
+    path    => "/bin/:/usr/bin/",
     require => Exec[see-oracle-license]
 }
 
 exec { "see-oracle-license":
     command => "echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections",
-    path    => "/bin/",
+    path    => "/bin/:/usr/bin/",
 }
 
 ### Fuck unity hidey-disappeary scrollbars!!!! :D ###
