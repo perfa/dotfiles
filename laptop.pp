@@ -121,8 +121,7 @@ apt::source { 'linrunner_tlp':
     repos      => 'main',
     key        => {
         'id'     =>  '2042F03C5FABD0BA2CED40412B3F92F902D65EFF',
-    },
-    notify => Exec['apt_update']
+    }
 }
 
 apt::source { 'ubuntu_tweak':
@@ -131,8 +130,7 @@ apt::source { 'ubuntu_tweak':
     repos    => 'apps',
     key      => {
          'id'      => '1958A549614CE21CFC27F4BAA8A515F046D7E7CF',
-    },
-    notify => Exec['apt_update']
+    }
 }
 
 apt::ppa { 'ppa:noobslab/themes': }
@@ -142,8 +140,7 @@ apt::source { 'webupd8team-ubuntu-java-wily':
     repos    => 'main',
     key      => {
         'id'     => '7B2C3B0889BF5709A105D03AC2518248EEA14886',
-    },
-    notify => Exec['apt_update']
+    }
 }
 
 $tlp_pkgs = [
@@ -155,17 +152,17 @@ $tlp_pkgs = [
 
 package { $tlp_pkgs: 
      ensure  => installed,
-     require => Apt::Source[linrunner_tlp],
+     require => [ Apt::Source[linrunner_tlp], Exec['apt_update'] ],
      }
 
 package { "ubuntu-tweak":
      ensure  => installed,
-     require => Apt::Source[ubuntu_tweak],
+     require => [ Apt::Source[ubuntu_tweak], Exec['apt_update'] ],
      }
 
 package { "oracle-java8-installer":
     ensure  => "installed",
-    require => [ Apt::Source['webupd8team-ubuntu-java-wily'], Exec['accept-oracle-license'] ]
+    require => [ Apt::Source['webupd8team-ubuntu-java-wily'], Exec['apt_update'], Exec['accept-oracle-license'] ]
 }
 
 exec { "accept-oracle-license":
