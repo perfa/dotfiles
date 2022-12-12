@@ -1,0 +1,30 @@
+alias ll='ls -halF -G'
+alias l='ls -CF -1 -G'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias allmod='git status | grep modified | cut -d':' -f2'
+alias be='bundle exec'
+alias envs='env | sort'
+alias pygrep='find . -name "*.py" | xargs grep -sI --color=auto'
+alias grepfile="cut -d ':' -f 1 | sort | uniq"
+alias unrel="git log --pretty=\"format:%h %an %s\" --graph `git tag | grep v | sort | tail -n 1`..HEAD"
+alias dlog='docker logs $(docker ps -a | tail -n +2 | awk '\''{ print $1 }'\'' | head -n 1)'
+alias verify='mvn clean package verify'
+alias addmod='git st | grep modified | awk '\''{print $2};'\'' | xargs git add'
+alias gp='git pull --rebase'
+alias gs='git status'
+alias gd='git diff'
+alias gpo='git push origin master'
+alias amend='git ci --amend'
+alias serve='browser-sync start --server --port 3001 --files="./*"'
+alias j8='JAVA_HOME=/usr/lib/jvm/jdk-8-oracle-x64'
+alias hintz="node_modules/.bin/jshint source/ && \
+         node_modules/.bin/jshint test/spec/ && \
+         node_modules/.bin/jscs source/ --reporter=inline && \
+         node_modules/.bin/jscs test/spec/ --reporter=inline"
+alias dockclean='docker ps -a | tail -n +2 | awk '\''{print $1;}'\'' | xargs docker rm'
+alias track='mdutil -a -i off'
+alias untrack='mdutil -a -i on'
+alias python=python3
+alias awslogin='aws ecr get-login-password --region=eu-central-1 | docker login --username AWS --password-stdin 237020688136.dkr.ecr.eu-central-1.amazonaws.com'
+
